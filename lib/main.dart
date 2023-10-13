@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/quiz.dart';
+import 'package:quiz_app/widget/quiz.dart';
+import 'package:quiz_app/screens/start_screen.dart';
 
 void main() {
-  runApp(const Quiz());
+  runApp(Quiz(child: StartScreen(),));
 }

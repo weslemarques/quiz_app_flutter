@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/quiz_question.dart';
+import 'package:quiz_app/model/quiz_question.dart';
 
 class AnswerButton extends StatelessWidget {
-  const AnswerButton({required this.text, required this.onPressed, super.key});
+  AnswerButton({required this.text, required this.onPressed, super.key});
   final String text;
   final Function() onPressed;
+
+  Color colorButton = const Color.fromARGB(255, 33, 1, 95);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class AnswerButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 33, 1, 95),
+          backgroundColor: colorButton ,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(
             horizontal: 40,
@@ -25,9 +27,12 @@ class AnswerButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(40),
           ),
         ),
-        onPressed: onPressed,
+        onPressed:onPressed,
         child: Text(text),
       ),
     );
   }
 }
+
+
+
