@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/screens/questions_screen.dart';
 import 'package:quiz_app/screens/start_screen.dart';
 
 // a classe Quiz é a classe principal da aplicação/
 // responsável por chamar as duas telas conforme necessário
 class Quiz extends StatefulWidget {
-  const Quiz({super.key});
+    Quiz({required this.child,super.key});
+
+  Widget child = StartScreen();
 
   @override
   State<Quiz> createState() => _QuizState();
 }
 
 class _QuizState extends State<Quiz> {
-  var activeScreen = 'start-screen';
-
-  void changeScreen() {
-    setState(() {
-      activeScreen = activeScreen == 'questions-screen' ? 'start-screen':'questions-screen';
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +30,10 @@ class _QuizState extends State<Quiz> {
               ],
             ),
           ),
-          child: activeScreen == 'start-screen'
-              ? StartScreen(changeScreen)
-              : QuestionsScreen(changeScreen),
+          child: widget.child
         ),
       ),
     );
   }
 }
+

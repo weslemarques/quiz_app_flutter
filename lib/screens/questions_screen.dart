@@ -1,69 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/answer_button.dart';
+import 'package:quiz_app/model/quiz_question.dart';
+import 'package:quiz_app/screens/results_screen.dart';
+import 'package:quiz_app/widget/answer_button.dart';
 
-import '../questions.dart';
+import '../data/questions.dart';
+import '../widget/quiz.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  QuestionsScreen(this.backStart,{super.key});
-
-  Function() backStart;
+  QuestionsScreen({super.key});
 
   @override
-  State<QuestionsScreen> createState() => _QuestionsScreenState(backStart);
+  State<QuestionsScreen> createState() => _QuestionsScreenState();
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
 
-  _QuestionsScreenState(this.backStart);
-  Function() backStart;
+  int correctQuestions = 0;
 
   var indiceAtual = 0;
 
   @override
   Widget build(BuildContext context) {
-    void responder() {
+
+
+    void checkAnswer(String answer, int indice){
+      var question = questions[indice];
+
+      if(question.isCorrect(answer)){
+        correctQuestions++;
+      }
+
+    }
+    void responder(String answer,int indice) {
       setState(() {
         indiceAtual++;
+        checkAnswer(answer, indice);
         if (indiceAtual == questions.length) {
           indiceAtual = 0;
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) =>
+                  ResultScreen(correctQuestions)));
         }
       });
     }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
+    return Quiz(
+       child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
 
-        Text(
-          questions[indiceAtual].text,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              color: Color.fromARGB(255, 201, 153, 251),
-              fontSize: 24,
-              fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        ...questions[indiceAtual].alternatives.map(
-              (resp) => AnswerButton(
-                text: resp,
-                onPressed: responder,
+            Text(
+              questions[indiceAtual].text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 201, 153, 251),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+
+            ...questions[indiceAtual].respostasEmbaralhadas().map(
+
+                  (resp) => AnswerButton(
+                   text:resp,
+                onPressed:() {
+                       responder(resp, indiceAtual);
+
+                }
               ),
             ),
-        const SizedBox(
-          height: 80,
-        ),
-        FilledButton.icon(
-          onPressed: backStart,
-          icon: const Icon(Icons.arrow_back),
-          label: const Text(
-            'Voltar',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-      ],
+          ],
+        )
     );
+
   }
 }
